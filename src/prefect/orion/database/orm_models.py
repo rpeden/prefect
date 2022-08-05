@@ -1001,6 +1001,16 @@ class ORMFlowRunNotificationQueue:
     flow_run_state_id = sa.Column(UUID, nullable=False)
 
 
+@declarative_mixin
+class ORMFeatureFlag:
+    """
+    A SQLAlchemy model of a Feature Flag.
+    """
+
+    name = sa.Column(sa.String, nullable=False, unique=True, index=True)
+    data = sa.Column(sa.JSON, server_default="{}", default={}, nullable=False)
+
+
 class BaseORMConfiguration(ABC):
     """
     Abstract base class used to inject database-specific ORM configuration into Orion.
