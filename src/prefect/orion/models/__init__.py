@@ -15,4 +15,5 @@ from . import (
     logs,
     work_queues,
     agents,
+    feature_flags,
 )

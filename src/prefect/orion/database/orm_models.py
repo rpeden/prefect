@@ -1152,6 +1152,7 @@ class BaseORMConfiguration(ABC):
         flow_run_notification_policy_mixin=ORMFlowRunNotificationPolicy,
         flow_run_notification_queue_mixin=ORMFlowRunNotificationQueue,
         configuration_mixin=ORMConfiguration,
+        feature_flag_mixin=ORMFeatureFlag,
     ):
         """
         Defines the ORM models used in Orion and binds them to the `self`. This method
@@ -1218,6 +1219,9 @@ class BaseORMConfiguration(ABC):
         class Configuration(configuration_mixin, self.Base):
             pass
 
+        class FeatureFlag(feature_flag_mixin, self.Base):
+            pass
+
         self.Flow = Flow
         self.FlowRunState = FlowRunState
         self.TaskRunState = TaskRunState
@@ -1238,6 +1242,7 @@ class BaseORMConfiguration(ABC):
         self.FlowRunNotificationPolicy = FlowRunNotificationPolicy
         self.FlowRunNotificationQueue = FlowRunNotificationQueue
         self.Configuration = Configuration
+        self.FeatureFlag = FeatureFlag
 
     @property
     @abstractmethod

@@ -189,6 +189,11 @@ class OrionDBInterface(metaclass=DBSingleton):
         return self.orm.Configuration
 
     @property
+    def FeatureFlag(self):
+        """A feature flag model"""
+        return self.orm.FeatureFlag
+
+    @property
     def deployment_unique_upsert_columns(self):
         """Unique columns for upserting a Deployment"""
         return self.orm.deployment_unique_upsert_columns

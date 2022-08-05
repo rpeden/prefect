@@ -746,5 +746,14 @@ class Agent(ORMBaseModel):
     )
 
 
+class FeatureFlag(ORMBaseModel):
+    """An ORM representation of a feature flag"""
+
+    name: str = Field(..., description="The name of the feature flag.")
+    data: dict = Field(
+        default_factory=dict, description="Configuration data for the feature flag."
+    )
+
+
 Flow.update_forward_refs()
 FlowRun.update_forward_refs()

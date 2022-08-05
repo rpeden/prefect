@@ -408,3 +408,18 @@ class FlowRunNotificationPolicyUpdate(PrefectBaseModel):
     tags: Optional[List[str]] = None
     block_document_id: Optional[UUID] = None
     message_template: Optional[str] = None
+
+
+class FeatureFlagCreate(
+    schemas.core.FeatureFlag.subclass(
+        "FeatureFlagCreate",
+        include_fields=[
+            "name",
+            "data",
+        ],
+    )
+):
+    """Data used by the Orion API to create a feature flag."""
+
+    class Config:
+        extra = "forbid"
