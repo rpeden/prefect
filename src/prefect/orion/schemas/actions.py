@@ -423,3 +423,18 @@ class FeatureFlagCreate(
 
     class Config:
         extra = "forbid"
+
+
+class FeatureFlagUpdate(
+    schemas.core.FeatureFlag.subclass(
+        "FeatureFlagUpdate",
+        include_fields=[
+            "name",
+            "data",
+        ],
+    )
+):
+    """Data used by the Orion API to update a feature flag."""
+
+    class Config:
+        extra = "forbid"
