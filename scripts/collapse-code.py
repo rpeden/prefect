@@ -1,4 +1,24 @@
-"""Collapsible code."""
+"""
+Collapsible code Markdown extension for Mkdocs. Add this file to the `hooks` section 
+of your `mkdocs.yml` file.
+
+Adapted from https://github.com/facelessuser/pymdown-extensions/blob/main/tools/collapse_code.py.
+
+To use the extension, wrap a block of code like so:
+
+/// collapse-code
+```python
+from prefect import flow, get_run_logger
+
+@flow()
+def test_flow():
+    get_run_logger().info("Surrounded by a collapsible code block!")
+
+test_flow()
+```
+///
+"""
+
 import xml.etree.ElementTree as etree
 from markdown import util as mutil
 import re
