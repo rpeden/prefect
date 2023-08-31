@@ -173,6 +173,7 @@ my_flow(name="marvin")
 
 If you need access to information about the flow, use the `prefect.runtime` module. For example:
 
+/// collapse-code
 ```python
 from prefect import flow
 from prefect.runtime import flow_run
@@ -193,6 +194,7 @@ def my_flow(name: str, limit: int = 100):
 # creates a flow run called 'my-flow-with-marvin-and-100'
 my_flow(name="marvin")
 ```
+///
 
 Note that `validate_parameters` will check that input values conform to the annotated types on the function. Where possible, values will be coerced into the correct type. For example, if a parameter is defined as `x: int` and "5" is passed, it will be resolved to `5`. If set to `False`, no validation will be performed on flow parameters.
 

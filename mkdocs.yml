@@ -10,9 +10,12 @@ extra_css:
     - stylesheets/syntax_highlights.css
     - stylesheets/termynal.css
     - stylesheets/extra.css
+    - stylesheets/collapse_code.css
 extra_javascript:
     - js/custom.js
     - js/termynal.js
+hooks:
+  - scripts/collapse-code.py
 markdown_extensions:
     - admonition
     - attr_list
