@@ -128,17 +128,5 @@ def on_config(config, **kwargs):
     collapse_code = CollapseCodeExtension()
     config["markdown_extensions"].append(collapse_code)
 
-# import os
-# import sys
-# # add cwd to sys.path
-# sys.path.append(os.getcwd())
-# # reload packages
-# import importlib
-# import markdown
-# import mkdocs
-# import site
-# importlib.reload(site)
-# importlib.reload(markdown)
-# importlib.reload(mkdocs)
 
 
