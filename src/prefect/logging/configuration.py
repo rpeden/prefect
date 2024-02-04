@@ -19,7 +19,7 @@ from prefect.utilities.collections import dict_to_flatdict, flatdict_to_dict
 
 # This path will be used if `PREFECT_LOGGING_SETTINGS_PATH` is null
 DEFAULT_LOGGING_SETTINGS_PATH = Path(__file__).parent / "logging.yml"
-
+print(f"DEFAULT_LOGGING_SETTINGS_PATH: {DEFAULT_LOGGING_SETTINGS_PATH}")
 # Stores the configuration used to setup logging in this Python process
 PROCESS_LOGGING_CONFIG: dict = None
 
@@ -89,7 +89,8 @@ def setup_logging(incremental: Optional[bool] = None) -> dict:
 
     try:
         logging.config.dictConfig(config)
-    except ValueError:
+    except ValueError as exc:
+        print(f"ValueError: {exc}")
         if incremental:
             setup_logging(incremental=False)
 

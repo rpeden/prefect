@@ -4,7 +4,7 @@ import traceback
 from types import TracebackType
 from typing import Optional, Tuple, Type, Union
 
-import orjson
+# import orjson
 
 from prefect.serializers import JSONSerializer
 
@@ -49,7 +49,7 @@ class JsonFormatter(logging.Formatter):
         self.serializer = JSONSerializer(
             jsonlib="orjson",
             object_encoder="pydantic.json.pydantic_encoder",
-            dumps_kwargs={"option": orjson.OPT_INDENT_2} if fmt == "pretty" else {},
+            #dumps_kwargs={"option": orjson.OPT_INDENT_2} if fmt == "pretty" else {},
         )
 
     def format(self, record: logging.LogRecord) -> str:
@@ -64,7 +64,7 @@ class JsonFormatter(logging.Formatter):
 
         # JSONSerializer returns bytes; decode to string to conform to
         # the `logging.Formatter.format` interface
-        return log_json_bytes.decode()
+        return log_json_bytes#.decode()
 
 
 class PrefectFormatter(logging.Formatter):

@@ -26,7 +26,24 @@ class PrefectLogAdapter(logging.LoggerAdapter):
     """
 
     def process(self, msg, kwargs):
-        kwargs["extra"] = {**self.extra, **(kwargs.get("extra") or {})}
+        kwargs["extra"] = {**(self.extra or {}), **(kwargs.get("extra") or {})}
+
+        from prefect._internal.compatibility.deprecated import (
+            PrefectDeprecationWarning,
+            generate_deprecation_message,
+        )
+        #print("processing message: ", msg, kwargs)
+        if "send_to_orion" in kwargs["extra"]:
+            warnings.warn(
+                generate_deprecation_message(
+                    'The "send_to_orion" option',
+                    start_date="May 2023",
+                    help='Use "send_to_api" instead.',
+                ),
+                PrefectDeprecationWarning,
+                stacklevel=4,
+            )
+
         return (msg, kwargs)
 
 
@@ -41,7 +58,8 @@ def get_logger(name: str = None) -> logging.Logger:
     """
 
     parent_logger = logging.getLogger("prefect")
-
+    # getting prefect logger
+    # print("parent logger is: ", parent_logger)
     if name:
         # Append the name if given but allow explicit full names e.g. "prefect.test"
         # should not become "prefect.prefect.test"
@@ -94,6 +112,7 @@ def get_run_logger(
 
     # Determine if this is a task or flow run logger
     if task_run_context:
+        print("making a task run logger")
         logger = task_run_logger(
             task_run=task_run_context.task_run,
             task=task_run_context.task,

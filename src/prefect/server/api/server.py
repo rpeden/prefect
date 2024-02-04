@@ -11,6 +11,7 @@ from hashlib import sha256
 from typing import Awaitable, Callable, Dict, List, Mapping, Optional, Tuple
 
 import anyio
+#import asyncpg
 import sqlalchemy as sa
 import sqlalchemy.exc
 from fastapi import APIRouter, Depends, FastAPI, Request, status
@@ -146,9 +147,36 @@ async def integrity_exception_handler(request: Request, exc: Exception):
     )
 
 
-async def db_locked_exception_handler(
-    request: Request, exc: sqlalchemy.exc.OperationalError
-):
+def is_client_retryable_exception(exc: Exception):
+    if isinstance(exc, sqlalchemy.exc.OperationalError) and isinstance(
+        exc.orig, sqlite3.OperationalError
+    ):
+        if getattr(exc.orig, "sqlite_errorname", None) in {
+            "SQLITE_BUSY",
+            "SQLITE_BUSY_SNAPSHOT",
+        } or SQLITE_LOCKED_MSG in getattr(exc.orig, "args", []):
+            return True
+        else:
+            # Avoid falling through to the generic `DBAPIError` case below
+            return False
+
+    if isinstance(
+        exc,
+        (
+            sqlalchemy.exc.DBAPIError,
+            # asyncpg.exceptions.QueryCanceledError,
+            # asyncpg.exceptions.ConnectionDoesNotExistError,
+            # asyncpg.exceptions.CannotConnectNowError,
+            sqlalchemy.exc.InvalidRequestError,
+            sqlalchemy.orm.exc.DetachedInstanceError,
+        ),
+    ):
+        return True
+
+    return False
+
+
+async def custom_internal_exception_handler(request: Request, exc: Exception):
     """
     Catch all sqlalchemy.exc.OperationalError. Return a 503 if it's a db locked error
     to retry, otherwise log the error and return 500.

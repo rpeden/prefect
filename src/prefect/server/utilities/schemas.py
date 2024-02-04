@@ -10,7 +10,7 @@ from functools import partial
 from typing import Any, Dict, List, Optional, Set, Type, TypeVar
 from uuid import UUID, uuid4
 
-import orjson
+#import orjson
 import pendulum
 import pydantic
 from packaging.version import Version
@@ -177,34 +177,11 @@ class PrefectBaseModel(BaseModel):
             copy_on_model_validation = False
 
         # Use orjson for serialization
-        json_loads = orjson.loads
-        json_dumps = orjson_dumps
+        #json_loads = orjson.loads
+        json_loads = json.loads
+        #json_dumps = orjson_dumps_extra_compatible
+        json_dumps = json.dumps
 
-    @classmethod
-    def subclass(
-        cls: Type[B],
-        name: str = None,
-        include_fields: List[str] = None,
-        exclude_fields: List[str] = None,
-    ) -> Type[B]:
-        """Creates a subclass of this model containing only the specified fields.
-
-        See `pydantic_subclass()`.
-
-        Args:
-            name (str, optional): a name for the subclass
-            include_fields (List[str], optional): fields to include
-            exclude_fields (List[str], optional): fields to exclude
-
-        Returns:
-            BaseModel: a subclass of this class
-        """
-        return pydantic_subclass(
-            base=cls,
-            name=name,
-            include_fields=include_fields,
-            exclude_fields=exclude_fields,
-        )
 
     def _reset_fields(self) -> Set[str]:
         """A set of field names that are reset when the PrefectBaseModel is copied.
